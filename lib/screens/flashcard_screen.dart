@@ -24,6 +24,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           japanese: "こんにちは",
           meaning: "Hello",
           pronunciation: "Konnichiwa",
+          frontSide: '',
+          backSide: '',
         ),
       );
       box.add(
@@ -31,6 +33,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           japanese: "ありがとう",
           meaning: "Thank you",
           pronunciation: "Arigatou",
+          frontSide: '',
+          backSide: '',
         ),
       );
     }

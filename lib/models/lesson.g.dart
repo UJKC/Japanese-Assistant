@@ -1,43 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'flashcard.dart';
+part of 'lesson.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FlashcardAdapter extends TypeAdapter<Flashcard> {
+class LessonAdapter extends TypeAdapter<Lesson> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  Flashcard read(BinaryReader reader) {
+  Lesson read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Flashcard(
-      frontSide: fields[0] as String,
-      backSide: fields[1] as String,
-      pronunciation: fields[2] as String,
-      isLearned: fields[3] as bool,
-      japanese: '',
-      meaning: '',
+    return Lesson(
+      lessonNumber: fields[0] as int,
+      lessonTitle: fields[1] as String,
+      lessonPages: fields[2] as String,
+      slug: fields[3] as String,
+      units: (fields[4] as List).cast<Unit>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Flashcard obj) {
+  void write(BinaryWriter writer, Lesson obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.frontSide)
+      ..write(obj.lessonNumber)
       ..writeByte(1)
-      ..write(obj.backSide)
+      ..write(obj.lessonTitle)
       ..writeByte(2)
-      ..write(obj.pronunciation)
+      ..write(obj.lessonPages)
       ..writeByte(3)
-      ..write(obj.isLearned);
+      ..write(obj.slug)
+      ..writeByte(4)
+      ..write(obj.units);
   }
 
   @override
@@ -46,7 +47,7 @@ class FlashcardAdapter extends TypeAdapter<Flashcard> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FlashcardAdapter &&
+      other is LessonAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,43 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'flashcard.dart';
+part of 'unit.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FlashcardAdapter extends TypeAdapter<Flashcard> {
+class UnitAdapter extends TypeAdapter<Unit> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  Flashcard read(BinaryReader reader) {
+  Unit read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Flashcard(
-      frontSide: fields[0] as String,
-      backSide: fields[1] as String,
-      pronunciation: fields[2] as String,
-      isLearned: fields[3] as bool,
-      japanese: '',
-      meaning: '',
+    return Unit(
+      title: fields[0] as String,
+      slug: fields[1] as String,
+      items: (fields[2] as List).cast<Flashcard>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Flashcard obj) {
+  void write(BinaryWriter writer, Unit obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.frontSide)
-      ..writeByte(1)
-      ..write(obj.backSide)
-      ..writeByte(2)
-      ..write(obj.pronunciation)
       ..writeByte(3)
-      ..write(obj.isLearned);
+      ..writeByte(0)
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.slug)
+      ..writeByte(2)
+      ..write(obj.items);
   }
 
   @override
@@ -46,7 +41,7 @@ class FlashcardAdapter extends TypeAdapter<Flashcard> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FlashcardAdapter &&
+      other is UnitAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
