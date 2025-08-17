@@ -1,6 +1,6 @@
-// lib/screens/flashcard_screen.dart
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:flip_card/flip_card.dart';
 import '../models/flashcard.dart';
 
 class FlashcardScreen extends StatefulWidget {
@@ -46,9 +46,46 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
         itemCount: flashcards.length,
         itemBuilder: (context, index) {
           final card = flashcards[index];
-          return ListTile(
-            title: Text(card.japanese),
-            subtitle: Text("${card.meaning} (${card.pronunciation})"),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FlipCard(
+              direction: FlipDirection.HORIZONTAL,
+              front: Card(
+                elevation: 4,
+                child: Container(
+                  height: 150,
+                  alignment: Alignment.center,
+                  child: Text(
+                    card.japanese,
+                    style: const TextStyle(fontSize: 32),
+                  ),
+                ),
+              ),
+              back: Card(
+                elevation: 4,
+                child: Container(
+                  height: 150,
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        card.pronunciation,
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        card.meaning,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         },
       ),
