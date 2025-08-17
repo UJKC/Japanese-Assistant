@@ -13,16 +13,13 @@ class FlashcardWidget extends StatelessWidget {
       direction: FlipDirection.HORIZONTAL,
       front: Card(
         child: Center(
-          child: Text(
-            flashcard.frontSide,
-            style: const TextStyle(fontSize: 28),
-          ),
+          child: Text(flashcard.japanese, style: const TextStyle(fontSize: 28)),
         ),
       ),
       back: Card(
         child: Center(
           child: Text(
-            "${flashcard.backSide}\n(${flashcard.pronunciation})",
+            "${flashcard.meaning}\n(${flashcard.pronunciation})",
             style: const TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),

@@ -5,10 +5,10 @@ part 'flashcard.g.dart';
 @HiveType(typeId: 0)
 class Flashcard extends HiveObject {
   @HiveField(0)
-  String frontSide; // Japanese word
+  String japanese; // Japanese word
 
   @HiveField(1)
-  String backSide; // English meaning
+  String meaning; // English meaning
 
   @HiveField(2)
   String pronunciation; // for TTS
@@ -17,24 +17,9 @@ class Flashcard extends HiveObject {
   bool isLearned;
 
   Flashcard({
-    required this.frontSide,
-    required this.backSide,
+    required this.japanese,
+    required this.meaning,
     this.pronunciation = "",
     this.isLearned = false,
-    required String japanese,
-    required String meaning,
   });
-
-  // Convenience alias getters so existing UI code works:
-  String get japanese => frontSide;
-  String get meaning => backSide;
-
-  // Optional convenience named ctor if you prefer japanese/meaning at callsites:
-  Flashcard.jp({
-    required String japanese,
-    required String meaning,
-    this.pronunciation = "",
-    this.isLearned = false,
-  }) : frontSide = japanese,
-       backSide = meaning;
 }

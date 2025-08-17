@@ -17,12 +17,10 @@ class FlashcardAdapter extends TypeAdapter<Flashcard> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Flashcard(
-      frontSide: fields[0] as String,
-      backSide: fields[1] as String,
+      japanese: fields[0] as String,
+      meaning: fields[1] as String,
       pronunciation: fields[2] as String,
       isLearned: fields[3] as bool,
-      japanese: '',
-      meaning: '',
     );
   }
 
@@ -31,9 +29,9 @@ class FlashcardAdapter extends TypeAdapter<Flashcard> {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.frontSide)
+      ..write(obj.japanese)
       ..writeByte(1)
-      ..write(obj.backSide)
+      ..write(obj.meaning)
       ..writeByte(2)
       ..write(obj.pronunciation)
       ..writeByte(3)
