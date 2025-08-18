@@ -1,6 +1,6 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'flashcard_main_lesson_screen.dart';
+import 'flashcard_main_lesson.dart';
 import 'quiz_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
               child: const Text("Learn Flashcards"),
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const FlashcardScreen()),
+                MaterialPageRoute(builder: (_) => const FlashcardMainLesson()),
               ),
             ),
             ElevatedButton(

@@ -1,47 +1,19 @@
+// lib/screens/flashcard_main_lesson_screen.dart
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import '../models/flashcard.dart';
+import '../models/unit.dart';
 import '../widgets/flashcard_item.dart';
 
-class FlashcardScreen extends StatefulWidget {
-  const FlashcardScreen({super.key});
+class FlashcardMainLessonScreen extends StatelessWidget {
+  final Unit unit;
 
-  @override
-  State<FlashcardScreen> createState() => _FlashcardScreenState();
-}
-
-class _FlashcardScreenState extends State<FlashcardScreen> {
-  late Box<Flashcard> box;
-
-  @override
-  void initState() {
-    super.initState();
-    box = Hive.box<Flashcard>('flashcards');
-
-    if (box.isEmpty) {
-      box.add(
-        Flashcard(
-          japanese: "こんにちは",
-          meaning: "Hello",
-          pronunciation: "Konnichiwa",
-        ),
-      );
-      box.add(
-        Flashcard(
-          japanese: "ありがとう",
-          meaning: "Thank you",
-          pronunciation: "Arigatou",
-        ),
-      );
-    }
-  }
+  const FlashcardMainLessonScreen({super.key, required this.unit});
 
   @override
   Widget build(BuildContext context) {
-    final flashcards = box.values.toList();
+    final flashcards = unit.items;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Flashcards")),
+      appBar: AppBar(title: Text(unit.title)),
       body: ListView.builder(
         itemCount: flashcards.length,
         itemBuilder: (context, index) {
