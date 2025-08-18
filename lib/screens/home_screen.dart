@@ -1,6 +1,6 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'flashcard_screen.dart';
+import 'flashcard_main_lesson_screen.dart';
 import 'quiz_screen.dart';
 
 class HomeScreen extends StatelessWidget {
