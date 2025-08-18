@@ -1,17 +1,21 @@
 // lib/screens/flashcard_main_lesson.dart
 import 'package:flutter/material.dart';
-import './../data/lesson20.dart';
+import '../models/lesson.dart';
 import 'flashcard_main_lesson_screen.dart';
 
 class FlashcardMainLesson extends StatelessWidget {
-  const FlashcardMainLesson({super.key});
+  final Lesson lesson;
+
+  const FlashcardMainLesson({super.key, required this.lesson});
 
   @override
   Widget build(BuildContext context) {
-    final units = lesson20.units;
+    final units = lesson.units;
 
     return Scaffold(
-      appBar: AppBar(title: Text(lesson20.lessonTitle)),
+      appBar: AppBar(
+        title: Text("Lesson ${lesson.lessonNumber}: ${lesson.lessonTitle}"),
+      ),
       body: ListView.builder(
         itemCount: units.length,
         itemBuilder: (context, index) {
