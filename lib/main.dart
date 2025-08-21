@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:japanese_assistant/models/quiz_result.dart';
 import 'models/flashcard.dart';
 import 'screens/home_screen.dart';
-import 'services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +14,6 @@ Future<void> main() async {
 
   Hive.registerAdapter(QuizResultAdapter());
   await Hive.openBox<QuizResult>('quiz_results'); // NEW
-
-  await NotificationService().init();
 
   runApp(const MyApp());
 }
