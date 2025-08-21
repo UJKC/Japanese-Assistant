@@ -1,6 +1,6 @@
 // lib/screens/flashcard_main.dart
 import 'package:flutter/material.dart';
-import './../data/lesson20.dart'; // later we can add lesson21, etc.
+import './../data/index.dart'; // instead of importing lesson20 directly
 import 'flashcard_main_lesson.dart';
 
 class FlashcardMain extends StatelessWidget {
@@ -8,9 +8,6 @@ class FlashcardMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // list of all lessons (for now only lesson20)
-    final lessons = [lesson20];
-
     return Scaffold(
       appBar: AppBar(title: const Text("All Lessons")),
       body: ListView.builder(
