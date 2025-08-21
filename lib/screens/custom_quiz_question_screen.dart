@@ -1,5 +1,7 @@
 // lib/screens/custom_quiz_question_screen.dart
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:japanese_assistant/models/quiz_result.dart';
 import '../models/flashcard.dart';
 import 'quiz_result_screen.dart';
 import 'dart:math';
@@ -35,9 +37,7 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
   void checkAnswer() {
     final current = allQuestions[currentIndex];
     final userAnswer = _answerController.text.trim().toLowerCase();
-    final correctAnswer = current.pronunciation
-        .trim()
-        .toLowerCase(); // Assuming english is answer
+    final correctAnswer = current.pronunciation.trim().toLowerCase();
 
     if (userAnswer == correctAnswer) {
       score++;
@@ -50,13 +50,30 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
         currentIndex++;
       });
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              QuizResultScreen(score: score, total: allQuestions.length),
-        ),
+      // ✅ Save result before navigating
+      final box = Hive.box<QuizResult>('quiz_results');
+      final percentScore = ((score / allQuestions.length) * 100).round();
+
+      final result = QuizResult(
+        user: "You", // Replace with actual user if needed
+        score: percentScore,
+        includedLessons: [],
+        date: DateTime.now(),
       );
+
+      box.add(result);
+
+      // ✅ Schedule navigation to avoid "setState after dispose" issues
+      Future.microtask(() {
+        Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                QuizResultScreen(score: score, total: allQuestions.length),
+          ),
+        );
+      });
     }
   }
 

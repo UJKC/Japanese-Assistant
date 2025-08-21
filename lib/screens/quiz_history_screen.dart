@@ -1,6 +1,5 @@
 // lib/screens/quiz_history_screen.dart
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/quiz_result.dart';
 
@@ -44,8 +43,8 @@ class QuizHistoryScreen extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
-                    "Lessons: ${_formatLessons(result.lessonsIncluded)}\n"
-                    "Date: ${result.timestamp.toLocal()}",
+                    "Lessons: ${_formatLessons(result.includedLessons)}\n"
+                    "Date: ${result.date.toLocal()}",
                   ),
                 ),
               );
