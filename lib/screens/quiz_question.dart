@@ -17,6 +17,8 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
   late List<Flashcard> allCards;
   int currentIndex = 0;
   String feedback = "";
+  bool answered = false; // track if user has answered
+  final TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -27,11 +29,21 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
 
   void checkAnswer(String answer) {
     final correct = allCards[currentIndex].pronunciation;
+    final meaning = allCards[currentIndex].meaning;
     setState(() {
       feedback = (answer.trim().toLowerCase() == correct.toLowerCase())
-          ? "✅ Correct!"
-          : "❌ Wrong! ($correct)";
+          ? "✅ Correct! and its also ($meaning)"
+          : "❌ Wrong! ($correct) and it is ($meaning)";
+      answered = true;
+    });
+    controller.clear(); // clear text after submit
+  }
+
+  void nextQuestion() {
+    setState(() {
       currentIndex = (currentIndex + 1) % allCards.length;
+      feedback = "";
+      answered = false;
     });
   }
 
@@ -57,7 +69,9 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
             Text(card.japanese, style: const TextStyle(fontSize: 32)),
             const SizedBox(height: 20),
             TextField(
+              controller: controller,
               onSubmitted: checkAnswer,
+              enabled: !answered, // disable typing after answer
               decoration: const InputDecoration(
                 hintText: "Enter meaning",
                 border: OutlineInputBorder(),
@@ -65,6 +79,12 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
             ),
             const SizedBox(height: 20),
             Text(feedback, style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            if (answered)
+              ElevatedButton(
+                onPressed: nextQuestion,
+                child: const Text("Next Question"),
+              ),
           ],
         ),
       ),
