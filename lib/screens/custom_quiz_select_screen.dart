@@ -1,7 +1,8 @@
 // lib/screens/custom_quiz_select_screen.dart
 import 'package:flutter/material.dart';
 import '../models/lesson.dart';
-import 'custom_quiz_question_screen.dart'; // will handle asking questions
+import '../data/index.dart'; // ✅ Import lessons list
+import 'custom_quiz_question_screen.dart';
 
 class CustomQuizSelectScreen extends StatefulWidget {
   const CustomQuizSelectScreen({super.key});
@@ -11,30 +12,19 @@ class CustomQuizSelectScreen extends StatefulWidget {
 }
 
 class _CustomQuizSelectScreenState extends State<CustomQuizSelectScreen> {
-  // Temporary static list — later we can load dynamically
-  final List<Lesson> allLessons = List.generate(
-    20,
-    (i) => Lesson(
-      lessonNumber: i + 1,
-      lessonTitle: "Lesson ${i + 1}",
-      lessonPages: "",
-      slug: "lesson_${i + 1}",
-      units: [],
-    ),
-  );
-
-  late List<bool> selected; // which lessons are selected
+  late List<bool> selected;
 
   @override
   void initState() {
     super.initState();
-    selected = List.filled(allLessons.length, true); // default all selected
+    // default all selected
+    selected = List.filled(lessons.length, true);
   }
 
   void startQuiz() {
     final chosenLessons = <Lesson>[];
-    for (int i = 0; i < allLessons.length; i++) {
-      if (selected[i]) chosenLessons.add(allLessons[i]);
+    for (int i = 0; i < lessons.length; i++) {
+      if (selected[i]) chosenLessons.add(lessons[i]);
     }
 
     if (chosenLessons.isEmpty) {
@@ -57,9 +47,9 @@ class _CustomQuizSelectScreenState extends State<CustomQuizSelectScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Select Lessons for Custom Quiz")),
       body: ListView.builder(
-        itemCount: allLessons.length,
+        itemCount: lessons.length,
         itemBuilder: (context, index) {
-          final lesson = allLessons[index];
+          final lesson = lessons[index];
           return CheckboxListTile(
             title: Text(
               "Lesson ${lesson.lessonNumber} - ${lesson.lessonTitle}",
