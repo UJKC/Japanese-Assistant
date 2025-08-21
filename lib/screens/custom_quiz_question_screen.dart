@@ -1,14 +1,13 @@
 // lib/screens/custom_quiz_question_screen.dart
 import 'package:flutter/material.dart';
-import '../models/lesson.dart';
 import '../models/flashcard.dart';
 import 'quiz_result_screen.dart';
 import 'dart:math';
 
 class CustomQuizQuestionScreen extends StatefulWidget {
-  final List<Lesson> lessons;
+  final List<Flashcard> flashcards;
 
-  const CustomQuizQuestionScreen({super.key, required this.lessons});
+  const CustomQuizQuestionScreen({super.key, required this.flashcards});
 
   @override
   State<CustomQuizQuestionScreen> createState() =>
@@ -24,23 +23,11 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
   void initState() {
     super.initState();
 
-    // Gather all flashcards from chosen lessons
-    final List<Flashcard> cards = [];
-    for (final lesson in widget.lessons) {
-      for (final unit in lesson.units) {
-        cards.addAll(unit.flashcards);
-      }
-    }
+    // Shuffle flashcards
+    final shuffled = List<Flashcard>.from(widget.flashcards)..shuffle(Random());
 
-    // Shuffle cards
-    cards.shuffle(Random());
-
-    // ✅ Apply max 20 limit
-    if (cards.length > 20) {
-      allQuestions = cards.take(20).toList();
-    } else {
-      allQuestions = cards;
-    }
+    // Apply max 20 limit
+    allQuestions = shuffled.length > 20 ? shuffled.take(20).toList() : shuffled;
   }
 
   void answerQuestion(bool isCorrect) {
@@ -51,7 +38,6 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
         currentIndex++;
       });
     } else {
-      // ✅ Quiz finished → go to results
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

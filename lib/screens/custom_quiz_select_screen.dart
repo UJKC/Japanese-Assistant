@@ -1,7 +1,8 @@
 // lib/screens/custom_quiz_select_screen.dart
 import 'package:flutter/material.dart';
 import '../models/lesson.dart';
-import '../data/index.dart'; // ✅ Import lessons list
+import '../models/flashcard.dart';
+import '../data/index.dart';
 import 'custom_quiz_question_screen.dart';
 
 class CustomQuizSelectScreen extends StatefulWidget {
@@ -22,14 +23,22 @@ class _CustomQuizSelectScreenState extends State<CustomQuizSelectScreen> {
   }
 
   void startQuiz() {
-    final chosenLessons = <Lesson>[];
+    final chosenFlashcards = <Flashcard>[];
+
     for (int i = 0; i < lessons.length; i++) {
-      if (selected[i]) chosenLessons.add(lessons[i]);
+      if (selected[i]) {
+        final lesson = lessons[i];
+        for (final unit in lesson.units) {
+          chosenFlashcards.addAll(unit.items);
+        }
+      }
     }
 
-    if (chosenLessons.isEmpty) {
+    if (chosenFlashcards.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select at least one lesson")),
+        const SnackBar(
+          content: Text("Please select at least one lesson with flashcards"),
+        ),
       );
       return;
     }
@@ -37,7 +46,7 @@ class _CustomQuizSelectScreenState extends State<CustomQuizSelectScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => CustomQuizQuestionScreen(lessons: chosenLessons),
+        builder: (_) => CustomQuizQuestionScreen(flashcards: chosenFlashcards),
       ),
     );
   }
