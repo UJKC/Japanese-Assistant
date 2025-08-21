@@ -1,8 +1,8 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
+import 'package:japanese_assistant/screens/custom_quiz_screen.dart';
 import 'flashcard_main.dart';
 import 'quiz_screen.dart';
-import 'custom_quiz_select_screen.dart'; // NEW
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -34,9 +34,7 @@ class HomeScreen extends StatelessWidget {
               child: const Text("Custom Quiz"), // NEW
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const CustomQuizSelectScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const CustomQuizScreen()),
               ),
             ),
           ],

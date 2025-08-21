@@ -15,4 +15,6 @@ class Unit extends HiveObject {
   List<Flashcard> items;
 
   Unit({required this.title, required this.slug, required this.items});
+
+  Iterable<Flashcard> get flashcards => [];
 }

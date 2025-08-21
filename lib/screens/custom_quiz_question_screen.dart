@@ -1,8 +1,9 @@
 // lib/screens/custom_quiz_question_screen.dart
 import 'package:flutter/material.dart';
-import '../models/flashcard.dart';
 import '../models/lesson.dart';
-import '../models/unit.dart';
+import '../models/flashcard.dart';
+import 'quiz_result_screen.dart';
+import 'dart:math';
 
 class CustomQuizQuestionScreen extends StatefulWidget {
   final List<Lesson> lessons;
@@ -15,79 +16,85 @@ class CustomQuizQuestionScreen extends StatefulWidget {
 }
 
 class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
-  late List<Flashcard> allCards;
+  late List<Flashcard> allQuestions;
   int currentIndex = 0;
-  String feedback = "";
-  bool answered = false;
-  final TextEditingController controller = TextEditingController();
+  int score = 0;
 
   @override
   void initState() {
     super.initState();
-    // Flatten all flashcards from selected lessons
-    allCards = widget.lessons.expand((lesson) {
-      return lesson.units.expand((Unit u) => u.items);
-    }).toList();
 
-    allCards.shuffle();
+    // Gather all flashcards from chosen lessons
+    final List<Flashcard> cards = [];
+    for (final lesson in widget.lessons) {
+      for (final unit in lesson.units) {
+        cards.addAll(unit.flashcards);
+      }
+    }
+
+    // Shuffle cards
+    cards.shuffle(Random());
+
+    // ✅ Apply max 20 limit
+    if (cards.length > 20) {
+      allQuestions = cards.take(20).toList();
+    } else {
+      allQuestions = cards;
+    }
   }
 
-  void checkAnswer(String answer) {
-    final correct = allCards[currentIndex].pronunciation;
-    final meaning = allCards[currentIndex].meaning;
-    setState(() {
-      feedback = (answer.trim().toLowerCase() == correct.toLowerCase())
-          ? "✅ Correct! and it also means ($meaning)"
-          : "❌ Wrong! Correct is ($correct) → ($meaning)";
-      answered = true;
-    });
-    controller.clear();
-  }
+  void answerQuestion(bool isCorrect) {
+    if (isCorrect) score++;
 
-  void nextQuestion() {
-    setState(() {
-      currentIndex = (currentIndex + 1) % allCards.length;
-      feedback = "";
-      answered = false;
-    });
+    if (currentIndex < allQuestions.length - 1) {
+      setState(() {
+        currentIndex++;
+      });
+    } else {
+      // ✅ Quiz finished → go to results
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+              QuizResultScreen(score: score, total: allQuestions.length),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (allCards.isEmpty) {
-      return const Scaffold(
-        body: Center(child: Text("No flashcards in selected lessons")),
+    if (allQuestions.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text("Custom Quiz")),
+        body: const Center(child: Text("No flashcards available")),
       );
     }
 
-    final card = allCards[currentIndex];
+    final Flashcard current = allQuestions[currentIndex];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Custom Quiz")),
+      appBar: AppBar(
+        title: Text("Question ${currentIndex + 1} / ${allQuestions.length}"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(card.japanese, style: const TextStyle(fontSize: 32)),
-            const SizedBox(height: 20),
-            TextField(
-              controller: controller,
-              onSubmitted: checkAnswer,
-              enabled: !answered,
-              decoration: const InputDecoration(
-                hintText: "Enter pronunciation",
-                border: OutlineInputBorder(),
-              ),
+            Text(
+              current.japanese,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            Text(feedback, style: const TextStyle(fontSize: 20)),
-            const SizedBox(height: 20),
-            if (answered)
-              ElevatedButton(
-                onPressed: nextQuestion,
-                child: const Text("Next Question"),
-              ),
+            ElevatedButton(
+              onPressed: () => answerQuestion(true),
+              child: const Text("I knew this"),
+            ),
+            ElevatedButton(
+              onPressed: () => answerQuestion(false),
+              child: const Text("I didn’t know"),
+            ),
           ],
         ),
       ),

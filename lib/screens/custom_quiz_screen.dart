@@ -33,7 +33,9 @@ class CustomQuizScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const QuizResultScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const QuizResultScreen(score: 0, total: 0),
+                  ),
                 );
               },
             ),

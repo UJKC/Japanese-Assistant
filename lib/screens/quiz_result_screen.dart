@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../models/quiz_result.dart';
 
 class QuizResultScreen extends StatefulWidget {
-  const QuizResultScreen({super.key});
+  const QuizResultScreen({super.key, required int score, required int total});
 
   @override
   State<QuizResultScreen> createState() => _QuizResultScreenState();
