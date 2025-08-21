@@ -1,6 +1,5 @@
 // lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'package:japanese_assistant/data/lesson20.dart';
 import 'flashcard_main.dart';
 import 'quiz_screen.dart';
 
@@ -26,7 +25,7 @@ class HomeScreen extends StatelessWidget {
               child: const Text("Take Quiz"),
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => QuizScreen(lesson: lesson20)),
+                MaterialPageRoute(builder: (_) => const QuizScreen()),
               ),
             ),
           ],
