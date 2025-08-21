@@ -1,6 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:japanese_assistant/models/quiz_result.dart';
 import 'models/flashcard.dart';
 import 'screens/home_screen.dart';
 import 'services/notification_service.dart';
@@ -11,6 +12,7 @@ Future<void> main() async {
 
   Hive.registerAdapter(FlashcardAdapter());
   await Hive.openBox<Flashcard>('flashcards');
+  await Hive.openBox<QuizResult>('quiz_results'); // NEW
 
   await NotificationService().init();
 

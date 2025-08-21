@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'flashcard_main.dart';
 import 'quiz_screen.dart';
+import 'custom_quiz_select_screen.dart'; // NEW
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,6 +27,16 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const QuizScreen()),
+              ),
+            ),
+            const SizedBox(height: 20), // spacing
+            ElevatedButton(
+              child: const Text("Custom Quiz"), // NEW
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const CustomQuizSelectScreen(),
+                ),
               ),
             ),
           ],
