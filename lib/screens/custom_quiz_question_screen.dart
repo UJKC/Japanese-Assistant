@@ -19,6 +19,8 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
   int currentIndex = 0;
   int score = 0;
 
+  final TextEditingController _answerController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -30,8 +32,18 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
     allQuestions = shuffled.length > 20 ? shuffled.take(20).toList() : shuffled;
   }
 
-  void answerQuestion(bool isCorrect) {
-    if (isCorrect) score++;
+  void checkAnswer() {
+    final current = allQuestions[currentIndex];
+    final userAnswer = _answerController.text.trim().toLowerCase();
+    final correctAnswer = current.pronunciation
+        .trim()
+        .toLowerCase(); // Assuming english is answer
+
+    if (userAnswer == correctAnswer) {
+      score++;
+    }
+
+    _answerController.clear();
 
     if (currentIndex < allQuestions.length - 1) {
       setState(() {
@@ -69,18 +81,20 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              current.japanese,
+              current.japanese, // question side
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => answerQuestion(true),
-              child: const Text("I knew this"),
+            TextField(
+              controller: _answerController,
+              decoration: const InputDecoration(
+                labelText: "Enter your answer",
+                border: OutlineInputBorder(),
+              ),
+              onSubmitted: (_) => checkAnswer(),
             ),
-            ElevatedButton(
-              onPressed: () => answerQuestion(false),
-              child: const Text("I didn’t know"),
-            ),
+            const SizedBox(height: 20),
+            ElevatedButton(onPressed: checkAnswer, child: const Text("Submit")),
           ],
         ),
       ),
