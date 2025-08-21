@@ -2,6 +2,8 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tzdata;
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -10,16 +12,34 @@ class NotificationService {
   Future<void> init() async {
     tzdata.initializeTimeZones();
 
-    const AndroidInitializationSettings initSettingsAndroid =
+    const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    const DarwinInitializationSettings iosSettings =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
+
     const InitializationSettings initSettings = InitializationSettings(
-      android: initSettingsAndroid,
+      android: androidSettings,
+      iOS: iosSettings,
     );
 
     await notificationsPlugin.initialize(initSettings);
 
-    scheduleDailyReminder();
+    await _requestPermissions();
+
+    await scheduleDailyReminder();
+  }
+
+  Future<void> _requestPermissions() async {
+    if (Platform.isAndroid || Platform.isIOS) {
+      if (await Permission.notification.isDenied) {
+        await Permission.notification.request();
+      }
+    }
   }
 
   Future<void> scheduleDailyReminder() async {
@@ -35,25 +55,26 @@ class NotificationService {
           importance: Importance.max,
           priority: Priority.high,
         ),
+        iOS: DarwinNotificationDetails(),
       ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode:
+          AndroidScheduleMode.exactAllowWhileIdle, // ✅ required
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 
   tz.TZDateTime _nextInstanceOfTenAM() {
     final now = tz.TZDateTime.now(tz.local);
-    final scheduled = tz.TZDateTime(
+    tz.TZDateTime scheduled = tz.TZDateTime(
       tz.local,
       now.year,
       now.month,
       now.day,
       10,
-    ); // 10:00 AM
-    return scheduled.isBefore(now)
-        ? scheduled.add(const Duration(days: 1))
-        : scheduled;
+    );
+    if (scheduled.isBefore(now)) {
+      scheduled = scheduled.add(const Duration(days: 1));
+    }
+    return scheduled;
   }
 }

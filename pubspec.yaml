@@ -32,13 +32,14 @@ dependencies:
     sdk: flutter
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  flutter_local_notifications: ^16.1.0
-  timezone: ^0.9.3
+  flutter_local_notifications: ^19.4.0
+  timezone: 0.10.1
   flip_card: ^0.7.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:
