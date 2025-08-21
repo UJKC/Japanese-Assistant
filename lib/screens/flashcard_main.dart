@@ -1,10 +1,61 @@
 // lib/screens/flashcard_main.dart
 import 'package:flutter/material.dart';
-import './../data/index.dart'; // instead of importing lesson20 directly
+import './../data/index.dart'; // lessons list
 import 'flashcard_main_lesson.dart';
+import '../models/lesson.dart';
 
-class FlashcardMain extends StatelessWidget {
+class FlashcardMain extends StatefulWidget {
   const FlashcardMain({super.key});
+
+  @override
+  State<FlashcardMain> createState() => _FlashcardMainState();
+}
+
+class _FlashcardMainState extends State<FlashcardMain> {
+  void _addLesson() {
+    final titleController = TextEditingController();
+    final pagesController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Add Lesson"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(labelText: "Lesson Title"),
+            ),
+            TextField(
+              controller: pagesController,
+              decoration: const InputDecoration(labelText: "Lesson Pages"),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final newLesson = Lesson(
+                lessonNumber: lessons.length + 1,
+                lessonTitle: titleController.text,
+                lessonPages: pagesController.text,
+                units: [],
+                slug: '',
+              );
+              setState(() => lessons.add(newLesson));
+              Navigator.pop(ctx);
+            },
+            child: const Text("Add"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +79,10 @@ class FlashcardMain extends StatelessWidget {
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addLesson,
+        child: const Icon(Icons.add),
       ),
     );
   }

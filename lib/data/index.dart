@@ -3,13 +3,11 @@
 // Import all lesson files here
 import 'lesson1.dart';
 import 'lesson20.dart';
+import '../models/lesson.dart';
 
 // Export them if you also want direct access
 export 'lesson1.dart';
 export 'lesson20.dart';
 
 // Now provide a single list that contains all lessons
-final lessons = [
-  lesson1,
-  lesson20,
-];
+List<Lesson> lessons = [lesson1, lesson20];
