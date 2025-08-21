@@ -12,6 +12,8 @@ Future<void> main() async {
 
   Hive.registerAdapter(FlashcardAdapter());
   await Hive.openBox<Flashcard>('flashcards');
+
+  Hive.registerAdapter(QuizResultAdapter());
   await Hive.openBox<QuizResult>('quiz_results'); // NEW
 
   await NotificationService().init();
