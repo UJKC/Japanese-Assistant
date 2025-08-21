@@ -6,13 +6,8 @@ import '../models/quiz_result.dart';
 class QuizHistoryScreen extends StatelessWidget {
   const QuizHistoryScreen({super.key});
 
-  String _formatLessons(List<int> lessons) {
-    if (lessons.length <= 5) {
-      return lessons.join(", ");
-    } else {
-      final firstFive = lessons.take(5).join(", ");
-      return "$firstFive ...";
-    }
+  String _formatLessons(List<String> lessons) {
+    return lessons.join(", ");
   }
 
   @override

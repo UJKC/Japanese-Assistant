@@ -23,10 +23,12 @@ class _CustomQuizSelectScreenState extends State<CustomQuizSelectScreen> {
 
   void startQuiz() {
     final chosenFlashcards = <Flashcard>[];
+    final selectedLessons = <String>[];
 
     for (int i = 0; i < lessons.length; i++) {
       if (selected[i]) {
         final lesson = lessons[i];
+        selectedLessons.add(lesson.lessonTitle);
         for (final unit in lesson.units) {
           chosenFlashcards.addAll(unit.items);
         }
@@ -45,7 +47,10 @@ class _CustomQuizSelectScreenState extends State<CustomQuizSelectScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => CustomQuizQuestionScreen(flashcards: chosenFlashcards),
+        builder: (_) => CustomQuizQuestionScreen(
+          flashcards: chosenFlashcards,
+          selectedLessons: selectedLessons,
+        ),
       ),
     );
   }

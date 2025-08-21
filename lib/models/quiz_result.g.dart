@@ -19,7 +19,7 @@ class QuizResultAdapter extends TypeAdapter<QuizResult> {
     return QuizResult(
       user: fields[0] as String,
       score: fields[1] as int,
-      includedLessons: (fields[2] as List).cast<int>(),
+      includedLessons: (fields[2] as List).cast<String>(),
       date: fields[3] as DateTime,
     );
   }

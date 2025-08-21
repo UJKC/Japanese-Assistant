@@ -8,8 +8,13 @@ import 'dart:math';
 
 class CustomQuizQuestionScreen extends StatefulWidget {
   final List<Flashcard> flashcards;
+  final List<String> selectedLessons;
 
-  const CustomQuizQuestionScreen({super.key, required this.flashcards});
+  const CustomQuizQuestionScreen({
+    super.key,
+    required this.flashcards,
+    required this.selectedLessons,
+  });
 
   @override
   State<CustomQuizQuestionScreen> createState() =>
@@ -57,7 +62,7 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
       final result = QuizResult(
         user: "You", // Replace with actual user if needed
         score: percentScore,
-        includedLessons: [],
+        includedLessons: widget.selectedLessons,
         date: DateTime.now(),
       );
 

@@ -11,7 +11,7 @@ class QuizResult extends HiveObject {
   int score;
 
   @HiveField(2)
-  List<int> includedLessons; // store lessonNumbers
+  List<String> includedLessons; // store lessonNumbers
 
   @HiveField(3)
   DateTime date;
@@ -22,8 +22,4 @@ class QuizResult extends HiveObject {
     required this.includedLessons,
     required this.date,
   });
-
-  List<int> get lessonsIncluded => [];
-
-  get timestamp => null;
 }
