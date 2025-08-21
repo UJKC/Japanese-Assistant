@@ -27,15 +27,18 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
     allCards.shuffle();
   }
 
-  void checkAnswer(String answer) {
+  void checkAnswer() {
+    final answer = controller.text;
     final correct = allCards[currentIndex].pronunciation;
     final meaning = allCards[currentIndex].meaning;
+
     setState(() {
       feedback = (answer.trim().toLowerCase() == correct.toLowerCase())
           ? "✅ Correct! and its also ($meaning)"
           : "❌ Wrong! ($correct) and it is ($meaning)";
       answered = true;
     });
+
     controller.clear(); // clear text after submit
   }
 
@@ -70,12 +73,21 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: controller,
-              onSubmitted: checkAnswer,
               enabled: !answered, // disable typing after answer
+              textInputAction: TextInputAction.done,
               decoration: const InputDecoration(
                 hintText: "Enter meaning",
                 border: OutlineInputBorder(),
               ),
+              onSubmitted: (_) =>
+                  checkAnswer(), // optional, still works on keyboard Done
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: answered
+                  ? null
+                  : checkAnswer, // disable button after answering
+              child: const Text("Submit"),
             ),
             const SizedBox(height: 20),
             Text(feedback, style: const TextStyle(fontSize: 20)),
