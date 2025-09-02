@@ -45,6 +45,31 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
     _showFlashcardDialog(existingCard: card, index: index);
   }
 
+  void _deleteFlashcard(int index) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete Flashcard'),
+        content: const Text('Are you sure you want to delete this flashcard?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                widget.unit.items.removeAt(index);
+              });
+              Navigator.pop(ctx);
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showFlashcardDialog({Flashcard? existingCard, int? index}) {
     final jpController = TextEditingController(
       text: existingCard?.japanese ?? "",
@@ -129,6 +154,11 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () => _editFlashcard(index),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: () =>
+                      _deleteFlashcard(index), // <-- Delete feature
                 ),
               ],
             ),
