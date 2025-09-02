@@ -28,12 +28,17 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
     await flutterTts.setLanguage("ja-JP"); // Japanese language
     await flutterTts.setSpeechRate(0.5); // Normal speed
     await flutterTts.setPitch(1.0); // Normal pitch
+    await flutterTts.awaitSpeakCompletion(true);
   }
 
   Future<void> _speakText(String text) async {
-    if (text.trim().isNotEmpty) {
-      await flutterTts.stop(); // Stop anything currently playing
+    if (text.trim().isEmpty) return;
+
+    try {
+      await flutterTts.stop(); // Stop any ongoing speech
       await flutterTts.speak(text);
+    } catch (e) {
+      debugPrint("TTS Error: $e");
     }
   }
 
