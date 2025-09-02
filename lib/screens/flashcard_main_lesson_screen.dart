@@ -32,6 +32,7 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
 
   Future<void> _speakText(String text) async {
     if (text.isNotEmpty) {
+      await flutterTts.stop(); // Stop anything currently playing
       await flutterTts.speak(text);
     }
   }
