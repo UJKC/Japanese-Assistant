@@ -25,20 +25,78 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
   }
 
   Future<void> _initTts() async {
-    await flutterTts.setLanguage("ja-JP"); // Japanese language
-    await flutterTts.setSpeechRate(0.5); // Normal speed
-    await flutterTts.setPitch(1.0); // Normal pitch
-    await flutterTts.awaitSpeakCompletion(true);
+    try {
+      var voices = await flutterTts.getVoices;
+      bool hasJapanese = false;
+
+      if (voices is List) {
+        for (var voice in voices) {
+          if (voice.toString().contains("ja-JP")) {
+            hasJapanese = true;
+            break;
+          }
+        }
+      }
+
+      if (hasJapanese) {
+        await flutterTts.setLanguage("ja-JP");
+      } else {
+        await flutterTts.setLanguage("en-US"); // fallback to English
+        _showDebugPopup("Japanese voice not found. Using English fallback.");
+      }
+
+      await flutterTts.setSpeechRate(0.4);
+      await flutterTts.setPitch(1.0);
+      await flutterTts.awaitSpeakCompletion(true);
+
+      flutterTts.setStartHandler(() {
+        _showDebugPopup("Speech Started");
+      });
+
+      flutterTts.setCompletionHandler(() {
+        _showDebugPopup("Speech Completed");
+      });
+
+      flutterTts.setErrorHandler((message) {
+        _showDebugPopup("TTS Error: $message");
+      });
+    } catch (e) {
+      _showDebugPopup("TTS Init Error: $e");
+    }
+  }
+
+  void _showDebugPopup(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("TTS Debug Info"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _speakText(String text) async {
-    if (text.trim().isEmpty) return;
+    if (text.trim().isEmpty) {
+      debugPrint("No text provided for TTS");
+      return;
+    }
 
     try {
-      await flutterTts.stop(); // Stop any ongoing speech
-      await flutterTts.speak(text);
+      await flutterTts.stop();
+      var result = await flutterTts.speak(text);
+      if (result == 1) {
+        debugPrint("Speaking: $text");
+      } else {
+        debugPrint("TTS did not start speaking. Result code: $result");
+      }
     } catch (e) {
-      debugPrint("TTS Error: $e");
+      debugPrint("TTS Speak Error: $e");
     }
   }
 
