@@ -10,14 +10,13 @@ A minimalist, offline-first flashcard app built with Flutter to help users learn
 
 ## 📱 Features
 
-- ✅ Daily flashcard learning (e.g., 10 words/day)
 - ✅ Quiz mode to test vocabulary
 - ✅ Offline support with local storage
 - ✅ Preloaded vocabulary set
 - ✅ User-added custom words (stored separately)
 - ✅ Daily notification reminders to study
-- 🚧 Future-ready voice playback (TTS)
-- 🚧 Future score tracking
+- ✅ Future-ready voice playback (TTS)
+- ✅ Future score tracking
 - 🚫 No login, no cloud sync
 
 ---
