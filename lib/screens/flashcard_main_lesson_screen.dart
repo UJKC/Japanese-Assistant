@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart'; // <-- 1. Import TTS
 import '../models/unit.dart';
 import '../models/flashcard.dart';
 import '../widgets/flashcard_item.dart';
@@ -14,6 +15,27 @@ class FlashcardMainLessonScreen extends StatefulWidget {
 }
 
 class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
+  late FlutterTts flutterTts; // <-- 2. Create TTS instance
+
+  @override
+  void initState() {
+    super.initState();
+    flutterTts = FlutterTts();
+    _initTts();
+  }
+
+  Future<void> _initTts() async {
+    await flutterTts.setLanguage("ja-JP"); // Japanese language
+    await flutterTts.setSpeechRate(0.5); // Normal speed
+    await flutterTts.setPitch(1.0); // Normal pitch
+  }
+
+  Future<void> _speakText(String text) async {
+    if (text.isNotEmpty) {
+      await flutterTts.speak(text);
+    }
+  }
+
   void _addFlashcard() {
     _showFlashcardDialog();
   }
@@ -70,10 +92,8 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
 
               setState(() {
                 if (existingCard == null) {
-                  // Add new card
                   widget.unit.items.add(newCard);
                 } else {
-                  // Update existing card
                   widget.unit.items[index!] = newCard;
                 }
               });
@@ -96,11 +116,21 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       body: ListView.builder(
         itemCount: flashcards.length,
         itemBuilder: (context, index) {
+          final card = flashcards[index];
           return ListTile(
-            title: FlashcardItem(card: flashcards[index]),
-            trailing: IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => _editFlashcard(index),
+            title: FlashcardItem(card: card),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.volume_up),
+                  onPressed: () => _speakText(card.japanese), // <-- Speak here
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () => _editFlashcard(index),
+                ),
+              ],
             ),
           );
         },
