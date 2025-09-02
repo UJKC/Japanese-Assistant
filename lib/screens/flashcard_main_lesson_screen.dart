@@ -65,7 +65,6 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       _showDebugPopup("TTS Init Error: $e");
     }
   }
-  */
 
   void _showDebugPopup(String message) {
     showDialog(
@@ -82,8 +81,6 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       ),
     );
   }
-
-  /*
 
   Future<void> _speakText(String text) async {
     if (text.trim().isEmpty) {
