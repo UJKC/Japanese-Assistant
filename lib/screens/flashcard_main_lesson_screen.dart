@@ -1,4 +1,3 @@
-// lib/screens/flashcard_main_lesson_screen.dart
 import 'package:flutter/material.dart';
 import '../models/unit.dart';
 import '../models/flashcard.dart';
@@ -16,14 +15,29 @@ class FlashcardMainLessonScreen extends StatefulWidget {
 
 class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
   void _addFlashcard() {
-    final jpController = TextEditingController();
-    final meaningController = TextEditingController();
-    final pronController = TextEditingController();
+    _showFlashcardDialog();
+  }
+
+  void _editFlashcard(int index) {
+    final card = widget.unit.items[index];
+    _showFlashcardDialog(existingCard: card, index: index);
+  }
+
+  void _showFlashcardDialog({Flashcard? existingCard, int? index}) {
+    final jpController = TextEditingController(
+      text: existingCard?.japanese ?? "",
+    );
+    final meaningController = TextEditingController(
+      text: existingCard?.meaning ?? "",
+    );
+    final pronController = TextEditingController(
+      text: existingCard?.pronunciation ?? "",
+    );
 
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("Add Flashcard"),
+        title: Text(existingCard == null ? "Add Flashcard" : "Edit Flashcard"),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -53,10 +67,20 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
                 meaning: meaningController.text,
                 pronunciation: pronController.text,
               );
-              setState(() => widget.unit.items.add(newCard));
+
+              setState(() {
+                if (existingCard == null) {
+                  // Add new card
+                  widget.unit.items.add(newCard);
+                } else {
+                  // Update existing card
+                  widget.unit.items[index!] = newCard;
+                }
+              });
+
               Navigator.pop(ctx);
             },
-            child: const Text("Add"),
+            child: Text(existingCard == null ? "Add" : "Save"),
           ),
         ],
       ),
@@ -72,7 +96,13 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       body: ListView.builder(
         itemCount: flashcards.length,
         itemBuilder: (context, index) {
-          return FlashcardItem(card: flashcards[index]);
+          return ListTile(
+            title: FlashcardItem(card: flashcards[index]),
+            trailing: IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => _editFlashcard(index),
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
