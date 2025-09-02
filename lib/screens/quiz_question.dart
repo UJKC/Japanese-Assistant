@@ -29,13 +29,13 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
 
   void checkAnswer() {
     final answer = controller.text;
-    final correct = allCards[currentIndex].pronunciation;
+    // final correct = allCards[currentIndex].pronunciation;
     final meaning = allCards[currentIndex].meaning;
 
     setState(() {
-      feedback = (answer.trim().toLowerCase() == correct.toLowerCase())
+      feedback = (answer.trim().toLowerCase() == meaning.toLowerCase())
           ? "✅ Correct! and its also ($meaning)"
-          : "❌ Wrong! ($correct) and it is ($meaning)";
+          : "❌ Wrong! ($meaning)";
       answered = true;
     });
 

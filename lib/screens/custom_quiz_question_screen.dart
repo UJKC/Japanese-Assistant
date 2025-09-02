@@ -42,7 +42,7 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
   void checkAnswer() {
     final current = allQuestions[currentIndex];
     final userAnswer = _answerController.text.trim().toLowerCase();
-    final correctAnswer = current.pronunciation.trim().toLowerCase();
+    final correctAnswer = current.meaning.trim().toLowerCase();
 
     if (userAnswer == correctAnswer) {
       score++;
