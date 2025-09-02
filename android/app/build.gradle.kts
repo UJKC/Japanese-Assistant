@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.japanese_assistant"
-        minSdk = flutter.minSdkVersion // Make sure this is at least 21 for modern plugins
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

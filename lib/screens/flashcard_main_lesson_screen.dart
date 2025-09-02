@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart'; // <-- 1. Import TTS
+// import 'package:flutter_tts/flutter_tts.dart'; // <-- 1. Import TTS
 import '../models/unit.dart';
 import '../models/flashcard.dart';
 import '../widgets/flashcard_item.dart';
@@ -15,6 +15,7 @@ class FlashcardMainLessonScreen extends StatefulWidget {
 }
 
 class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
+  /*
   late FlutterTts flutterTts; // <-- 2. Create TTS instance
 
   @override
@@ -64,6 +65,7 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       _showDebugPopup("TTS Init Error: $e");
     }
   }
+  */
 
   void _showDebugPopup(String message) {
     showDialog(
@@ -80,6 +82,8 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       ),
     );
   }
+
+  /*
 
   Future<void> _speakText(String text) async {
     if (text.trim().isEmpty) {
@@ -105,6 +109,8 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
     flutterTts.stop();
     super.dispose();
   }
+
+  */
 
   void _addFlashcard() {
     _showFlashcardDialog();
@@ -217,10 +223,12 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                /*
                 IconButton(
                   icon: const Icon(Icons.volume_up),
                   onPressed: () => _speakText(card.japanese), // <-- Speak here
                 ),
+                */
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () => _editFlashcard(index),
