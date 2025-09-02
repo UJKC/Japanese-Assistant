@@ -29,10 +29,10 @@ class FlashcardItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(card.pronunciation, style: const TextStyle(fontSize: 24)),
+                Text(card.meaning, style: const TextStyle(fontSize: 24)),
                 const SizedBox(height: 8),
                 Text(
-                  card.meaning,
+                  card.pronunciation,
                   style: const TextStyle(fontSize: 18, color: Colors.grey),
                 ),
               ],
