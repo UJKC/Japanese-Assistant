@@ -35,7 +35,7 @@ class NotificationService {
   }
 
   Future<void> _requestPermissions() async {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (Platform.isAndroid) {
       if (await Permission.notification.isDenied) {
         await Permission.notification.request();
       }
