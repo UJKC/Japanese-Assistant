@@ -31,10 +31,16 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
   }
 
   Future<void> _speakText(String text) async {
-    if (text.isNotEmpty) {
+    if (text.trim().isNotEmpty) {
       await flutterTts.stop(); // Stop anything currently playing
       await flutterTts.speak(text);
     }
+  }
+
+  @override
+  void dispose() {
+    flutterTts.stop();
+    super.dispose();
   }
 
   void _addFlashcard() {
