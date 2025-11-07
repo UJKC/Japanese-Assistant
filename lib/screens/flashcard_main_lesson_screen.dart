@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_tts/flutter_tts.dart'; // <-- 1. Import TTS
+import 'package:flutter_tts/flutter_tts.dart'; // ✅ 1. Import TTS
 import '../models/unit.dart';
 import '../models/flashcard.dart';
 import '../widgets/flashcard_item.dart';
 
 class FlashcardMainLessonScreen extends StatefulWidget {
   final Unit unit;
+  final FlutterTts flutterTts; // ✅ 2. Receive TTS instance
 
-  const FlashcardMainLessonScreen({super.key, required this.unit});
+  const FlashcardMainLessonScreen({
+    super.key,
+    required this.unit,
+    required this.flutterTts, // ✅ required parameter
+  });
 
   @override
   State<FlashcardMainLessonScreen> createState() =>
@@ -15,100 +20,6 @@ class FlashcardMainLessonScreen extends StatefulWidget {
 }
 
 class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
-  /*
-  late FlutterTts flutterTts; // <-- 2. Create TTS instance
-
-  @override
-  void initState() {
-    super.initState();
-    flutterTts = FlutterTts();
-    _initTts();
-  }
-
-  Future<void> _initTts() async {
-    try {
-      var voices = await flutterTts.getVoices;
-      bool hasJapanese = false;
-
-      if (voices is List) {
-        for (var voice in voices) {
-          if (voice.toString().contains("ja-JP")) {
-            hasJapanese = true;
-            break;
-          }
-        }
-      }
-
-      if (hasJapanese) {
-        await flutterTts.setLanguage("ja-JP");
-      } else {
-        await flutterTts.setLanguage("en-US"); // fallback to English
-        _showDebugPopup("Japanese voice not found. Using English fallback.");
-      }
-
-      await flutterTts.setSpeechRate(0.4);
-      await flutterTts.setPitch(1.0);
-      await flutterTts.awaitSpeakCompletion(true);
-
-      flutterTts.setStartHandler(() {
-        _showDebugPopup("Speech Started");
-      });
-
-      flutterTts.setCompletionHandler(() {
-        _showDebugPopup("Speech Completed");
-      });
-
-      flutterTts.setErrorHandler((message) {
-        _showDebugPopup("TTS Error: $message");
-      });
-    } catch (e) {
-      _showDebugPopup("TTS Init Error: $e");
-    }
-  }
-
-  void _showDebugPopup(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text("TTS Debug Info"),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text("OK"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _speakText(String text) async {
-    if (text.trim().isEmpty) {
-      debugPrint("No text provided for TTS");
-      return;
-    }
-
-    try {
-      await flutterTts.stop();
-      var result = await flutterTts.speak(text);
-      if (result == 1) {
-        debugPrint("Speaking: $text");
-      } else {
-        debugPrint("TTS did not start speaking. Result code: $result");
-      }
-    } catch (e) {
-      debugPrint("TTS Speak Error: $e");
-    }
-  }
-
-  @override
-  void dispose() {
-    flutterTts.stop();
-    super.dispose();
-  }
-
-  */
-
   void _addFlashcard() {
     _showFlashcardDialog();
   }
@@ -205,6 +116,12 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
     );
   }
 
+  // ✅ 3. TTS function
+  Future<void> _speak(String text) async {
+    await widget.flutterTts.stop(); // stop previous speech
+    await widget.flutterTts.speak(text);
+  }
+
   @override
   Widget build(BuildContext context) {
     final flashcards = widget.unit.items;
@@ -220,20 +137,17 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                /*
                 IconButton(
-                  icon: const Icon(Icons.volume_up),
-                  onPressed: () => _speakText(card.japanese), // <-- Speak here
+                  icon: const Icon(Icons.volume_up), // ✅ Speak button
+                  onPressed: () => _speak(card.japanese),
                 ),
-                */
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () => _editFlashcard(index),
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () =>
-                      _deleteFlashcard(index), // <-- Delete feature
+                  onPressed: () => _deleteFlashcard(index),
                 ),
               ],
             ),

@@ -1,10 +1,14 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_tts/flutter_tts.dart'; // ✅ Add this import
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:japanese_assistant/models/quiz_result.dart';
 import 'models/flashcard.dart';
 import 'screens/home_screen.dart';
+
+// ✅ Make FlutterTts instance globally accessible
+final FlutterTts flutterTts = FlutterTts();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +19,11 @@ Future<void> main() async {
 
   Hive.registerAdapter(QuizResultAdapter());
   await Hive.openBox<QuizResult>('quiz_results'); // NEW
+
+  // ✅ Optional: Initialize basic TTS settings
+  await flutterTts.setLanguage("ja-JP");
+  await flutterTts.setSpeechRate(0.4);
+  await flutterTts.setPitch(1.0);
 
   runApp(MyApp());
 }
@@ -28,11 +37,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
   @override
   void initState() {
     super.initState();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid = AndroidInitializationSettings(
+    var initializationSettingsAndroid = const AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
     var initializationSettings = InitializationSettings(

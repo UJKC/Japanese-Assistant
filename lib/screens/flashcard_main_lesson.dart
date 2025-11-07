@@ -1,13 +1,19 @@
 // lib/screens/flashcard_main_lesson.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart'; // ✅ Add this import
 import '../models/lesson.dart';
 import '../models/unit.dart';
 import 'flashcard_main_lesson_screen.dart';
 
 class FlashcardMainLesson extends StatefulWidget {
   final Lesson lesson;
+  final FlutterTts flutterTts; // ✅ Receive TTS instance
 
-  const FlashcardMainLesson({super.key, required this.lesson});
+  const FlashcardMainLesson({
+    super.key,
+    required this.lesson,
+    required this.flutterTts, // ✅ Required parameter
+  });
 
   @override
   State<FlashcardMainLesson> createState() => _FlashcardMainLessonState();
@@ -79,7 +85,10 @@ class _FlashcardMainLessonState extends State<FlashcardMainLesson> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => FlashcardMainLessonScreen(unit: unit),
+                  builder: (_) => FlashcardMainLessonScreen(
+                    unit: unit,
+                    flutterTts: widget.flutterTts, // ✅ Pass it forward
+                  ),
                 ),
               );
             },
