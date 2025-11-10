@@ -1,14 +1,34 @@
-// lib/main.dart
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_tts/flutter_tts.dart'; // ✅ Add this import
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:japanese_assistant/models/quiz_result.dart';
 import 'models/flashcard.dart';
 import 'screens/home_screen.dart';
+import 'services/notification_service.dart';
+// ✅ Import Android intent
 
-// ✅ Make FlutterTts instance globally accessible
 final FlutterTts flutterTts = FlutterTts();
+
+// ✅ Add this function
+Future<bool> requestExactAlarmPermission() async {
+  if (!Platform.isAndroid) return true; // iOS or others, continue
+
+  var box = await Hive.openBox('app_settings');
+  bool? granted = box.get('exact_alarm_granted', defaultValue: false);
+
+  if (granted == true) {
+    // Already granted before
+    return true;
+  }
+
+  // Do NOT open settings if not granted yet
+  // Only allow user to grant manually from settings
+  return false;
+}
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,17 +36,37 @@ Future<void> main() async {
 
   Hive.registerAdapter(FlashcardAdapter());
   await Hive.openBox<Flashcard>('flashcards');
-
   Hive.registerAdapter(QuizResultAdapter());
-  await Hive.openBox<QuizResult>('quiz_results'); // NEW
+  await Hive.openBox<QuizResult>('quiz_results');
 
-  // ✅ Optional: Initialize basic TTS settings
+  // Initialize TTS
   await flutterTts.setLanguage("ja-JP");
   await flutterTts.setSpeechRate(0.4);
   await flutterTts.setPitch(1.0);
 
-  runApp(MyApp());
+  // Initialize Notifications
+  final notificationService = NotificationService();
+  await notificationService.initNotification();
+
+  // ✅ Request Notification Permission
+  bool? permissionGranted = await notificationService.requestPermission();
+
+  if (permissionGranted!) {
+    // ✅ Schedule periodic notifications only if granted
+    await notificationService.schedulePeriodicNotification(
+      title: "Study Reminder 🇯🇵",
+      body: "Time to practice your Japanese flashcards!",
+      interval: RepeatInterval.daily,
+    );
+  } else {
+    // ❌ Permission denied — handle gracefully
+    print("User denied notification permission. Notifications disabled.");
+  }
+
+  runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -36,20 +76,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-  @override
-  void initState() {
-    super.initState();
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid = const AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
-    );
-    var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
 
   @override
   Widget build(BuildContext context) {

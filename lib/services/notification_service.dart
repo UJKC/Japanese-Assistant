@@ -1,80 +1,123 @@
 // lib/services/notification_service.dart
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tzdata;
-import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
+import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin notificationsPlugin =
+  static final NotificationService _notificationService =
+      NotificationService._internal();
+
+  factory NotificationService() => _notificationService;
+
+  NotificationService._internal();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> init() async {
-    tzdata.initializeTimeZones();
+  Future<void> initNotification() async {
+    tz.initializeTimeZones();
 
-    const AndroidInitializationSettings androidSettings =
+    const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    const DarwinInitializationSettings iosSettings =
-        DarwinInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  // Show instant notification
+  Future<void> showInstantNotification(String title, String body) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'flashcard_channel',
+          'Flashcard Notifications',
+          channelDescription: 'Reminders for flashcard learning',
+          importance: Importance.high,
+          priority: Priority.high,
         );
 
-    const InitializationSettings initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: iosSettings,
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
     );
 
-    await notificationsPlugin.initialize(initSettings);
-
-    await _requestPermissions();
-
-    await scheduleDailyReminder();
-  }
-
-  Future<void> _requestPermissions() async {
-    if (Platform.isAndroid) {
-      if (await Permission.notification.isDenied) {
-        await Permission.notification.request();
-      }
-    }
-  }
-
-  Future<void> scheduleDailyReminder() async {
-    await notificationsPlugin.zonedSchedule(
+    await flutterLocalNotificationsPlugin.show(
       0,
-      'Study Japanese!',
-      'Your daily flashcards are ready.',
-      _nextInstanceOfTenAM(),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'daily_channel',
-          'Daily Reminder',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails(),
-      ),
-      androidScheduleMode:
-          AndroidScheduleMode.exactAllowWhileIdle, // ✅ required
-      matchDateTimeComponents: DateTimeComponents.time,
+      title,
+      body,
+      notificationDetails,
     );
   }
 
-  tz.TZDateTime _nextInstanceOfTenAM() {
-    final now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduled = tz.TZDateTime(
-      tz.local,
-      now.year,
-      now.month,
-      now.day,
-      10,
+  // ✅ Periodic notification (e.g., every day at roughly the same time)
+  Future<void> schedulePeriodicNotification({
+    required String title,
+    required String body,
+    required RepeatInterval interval,
+  }) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+          'periodic_channel',
+          'Periodic Notifications',
+          channelDescription: 'Periodic reminders for flashcard learning',
+          importance: Importance.high,
+          priority: Priority.high,
+        );
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
     );
-    if (scheduled.isBefore(now)) {
-      scheduled = scheduled.add(const Duration(days: 1));
+
+    await flutterLocalNotificationsPlugin.periodicallyShow(
+      0,
+      title,
+      body,
+      interval, // e.g., RepeatInterval.daily
+      notificationDetails,
+      androidScheduleMode: AndroidScheduleMode.inexact,
+    );
+  }
+
+  Future<bool?> requestPermission() async {
+    final plugin = flutterLocalNotificationsPlugin;
+
+    // iOS or macOS
+    final iosPlugin = plugin
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >();
+    final macPlugin = plugin
+        .resolvePlatformSpecificImplementation<
+          MacOSFlutterLocalNotificationsPlugin
+        >();
+
+    if (iosPlugin != null) {
+      return await iosPlugin.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
     }
-    return scheduled;
+
+    if (macPlugin != null) {
+      return await macPlugin.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
+
+    // Android 13+ (Tiramisu)
+    final androidPlugin = plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+
+    if (androidPlugin != null) {
+      final granted = await androidPlugin.requestNotificationsPermission();
+      return granted ?? false;
+    }
+
+    // For platforms where permission is not required
+    return true;
   }
 }
