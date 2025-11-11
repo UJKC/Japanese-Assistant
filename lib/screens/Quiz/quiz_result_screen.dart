@@ -1,6 +1,6 @@
 // lib/screens/quiz_result_screen.dart
 import 'package:flutter/material.dart';
-import 'home_screen.dart'; // make sure this import points to your HomeScreen file
+import '../home_screen.dart'; // make sure this import points to your HomeScreen file
 
 class QuizResultScreen extends StatelessWidget {
   final int score;

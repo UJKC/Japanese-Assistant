@@ -1,8 +1,8 @@
 // lib/screens/quiz_question.dart
 import 'package:flutter/material.dart';
-import '../models/flashcard.dart';
-import '../models/lesson.dart';
-import '../models/unit.dart';
+import '../../models/flashcard.dart';
+import '../../models/lesson.dart';
+import '../../models/unit.dart';
 
 class QuizQuestionScreen extends StatefulWidget {
   final Lesson lesson;

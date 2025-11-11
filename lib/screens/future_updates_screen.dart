@@ -23,6 +23,7 @@ class FutureUpdatesScreen extends StatelessWidget {
             Text(
               "- Paragraph interface to show very long texts.\n"
               "- Additional AI features for language learning.\n"
+              "- Listening paragraph feature.\n"
               "- Other UI improvements based on user feedback.",
               style: TextStyle(fontSize: 16),
             ),

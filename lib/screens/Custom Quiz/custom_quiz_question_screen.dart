@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:japanese_assistant/models/quiz_result.dart';
-import '../models/flashcard.dart';
-import 'quiz_result_screen.dart';
+import '../../models/flashcard.dart';
+import '../Quiz/quiz_result_screen.dart';
 import 'dart:math';
 
 class CustomQuizQuestionScreen extends StatefulWidget {

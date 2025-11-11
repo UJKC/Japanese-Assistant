@@ -1,9 +1,9 @@
 // lib/screens/flashcard_main.dart
 import 'package:flutter/material.dart';
-import './../data/index.dart'; // lessons list
-import '../main.dart'; // ✅ import to access global flutterTts
+import '../../data/index.dart'; // lessons list
+import '../../main.dart'; // ✅ import to access global flutterTts
 import 'flashcard_main_lesson.dart';
-import '../models/lesson.dart';
+import '../../models/lesson.dart';
 
 class FlashcardMain extends StatefulWidget {
   const FlashcardMain({super.key});

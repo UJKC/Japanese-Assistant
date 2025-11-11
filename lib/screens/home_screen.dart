@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:japanese_assistant/screens/custom_quiz_screen.dart';
-import 'flashcard_main.dart';
-import 'quiz_screen.dart';
+import 'package:japanese_assistant/screens/Custom%20Quiz/custom_quiz_screen.dart';
+import 'Flashcard/flashcard_main.dart';
+import 'Quiz/quiz_screen.dart';
 import 'credits_screen.dart';
 import 'future_updates_screen.dart';
 import 'ai_updates_screen.dart';

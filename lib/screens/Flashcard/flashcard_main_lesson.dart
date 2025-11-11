@@ -1,8 +1,8 @@
 // lib/screens/flashcard_main_lesson.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ Add this import
-import '../models/lesson.dart';
-import '../models/unit.dart';
+import '../../models/lesson.dart';
+import '../../models/unit.dart';
 import 'flashcard_main_lesson_screen.dart';
 
 class FlashcardMainLesson extends StatefulWidget {

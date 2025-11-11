@@ -1,7 +1,7 @@
 // lib/screens/quiz_history_screen.dart
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../models/quiz_result.dart';
+import '../../models/quiz_result.dart';
 
 class QuizHistoryScreen extends StatelessWidget {
   const QuizHistoryScreen({super.key});

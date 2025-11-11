@@ -1,6 +1,6 @@
 // lib/screens/quiz_screen.dart
 import 'package:flutter/material.dart';
-import '../data/index.dart'; // contains lessons list
+import '../../data/index.dart'; // contains lessons list
 import 'quiz_question.dart';
 
 class QuizScreen extends StatelessWidget {

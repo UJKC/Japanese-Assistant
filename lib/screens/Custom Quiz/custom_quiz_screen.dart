@@ -1,6 +1,6 @@
 // lib/screens/custom_quiz_screen.dart
 import 'package:flutter/material.dart';
-import 'package:japanese_assistant/screens/quiz_history_screen.dart';
+import 'package:japanese_assistant/screens/Quiz/quiz_history_screen.dart';
 import 'custom_quiz_select_screen.dart';
 
 class CustomQuizScreen extends StatelessWidget {
