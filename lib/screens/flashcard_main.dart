@@ -42,7 +42,7 @@ class _FlashcardMainState extends State<FlashcardMain> {
           ElevatedButton(
             onPressed: () {
               final newLesson = Lesson(
-                lessonNumber: lessons.length + 1,
+                lessonNumber: lessons.length,
                 lessonTitle: titleController.text,
                 lessonPages: pagesController.text,
                 units: [],
