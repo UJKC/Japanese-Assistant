@@ -42,10 +42,49 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
   void checkAnswer() {
     final current = allQuestions[currentIndex];
     final userAnswer = _answerController.text.trim().toLowerCase();
-    final correctAnswer = current.meaning.trim().toLowerCase();
 
-    if (userAnswer == correctAnswer) {
+    print('\n==============================');
+    print('🧠 Original meaning: "${current.meaning}"');
+    print('✏️ User answer (raw): "$userAnswer"');
+
+    // Clean and normalize a text string
+    String cleanText(String text) {
+      String cleaned = text
+          .replaceAll(RegExp(r'\([^)]*\)'), '') // Remove (...) and content
+          .replaceAll(RegExp(r'\.{3,}\??'), '') // Remove "..." or "...?"
+          .replaceAll(RegExp(r'\s+'), ' ') // Normalize spaces
+          .trim()
+          .toLowerCase();
+
+      return cleaned;
+    }
+
+    // Clean the meaning
+    final cleanedMeaning = cleanText(current.meaning);
+    print('✅ Cleaned meaning: "$cleanedMeaning"');
+
+    // Split by semicolon into possible correct answers
+    final possibleAnswers = cleanedMeaning
+        .split(RegExp(r'[;,]+')) // split by ; or , just in case
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+
+    print('🔍 Possible answers list: $possibleAnswers');
+
+    // Clean the user's answer
+    final cleanedUserAnswer = cleanText(userAnswer);
+    print('🧹 Cleaned user answer: "$cleanedUserAnswer"');
+
+    // Check if user’s answer matches any of the possible correct answers
+    final isCorrect = possibleAnswers.any((ans) => ans == cleanedUserAnswer);
+    print('✅ Match found? $isCorrect');
+
+    if (isCorrect) {
       score++;
+      print('🎯 Correct! Current score: $score');
+    } else {
+      print('❌ Incorrect. Correct answers were: $possibleAnswers');
     }
 
     _answerController.clear();
@@ -68,10 +107,11 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
 
       box.add(result);
 
+      print('📦 Result saved: ${result.score}% (${result.includedLessons})');
+
       // ✅ Schedule navigation to avoid "setState after dispose" issues
       Future.microtask(() {
         Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (_) =>

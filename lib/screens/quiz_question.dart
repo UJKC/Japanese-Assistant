@@ -28,18 +28,44 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
   }
 
   void checkAnswer() {
-    final answer = controller.text;
-    // final correct = allCards[currentIndex].pronunciation;
-    final meaning = allCards[currentIndex].meaning;
+    String answer = controller.text.trim().toLowerCase();
+    String meaning = allCards[currentIndex].meaning;
+
+    print('--- Original meaning: "$meaning" ---');
+
+    // 1️⃣ Remove (...) and anything inside
+    meaning = meaning.replaceAll(RegExp(r'\([^)]*\)'), '');
+    print('After removing (...): "$meaning"');
+
+    // 2️⃣ Remove ... and ...?
+    meaning = meaning.replaceAll(RegExp(r'\.\.\.?'), '');
+    print('After removing ... or ...?: "$meaning"');
+
+    // 3️⃣ Trim and normalize spaces
+    meaning = meaning.trim().toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
+    print('After trimming and normalizing: "$meaning"');
+
+    // 4️⃣ Split meaning into possible answers (refine separator if needed)
+    List<String> possibleAnswers = meaning
+        .split(RegExp(r'[;,]+'))
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+
+    print('Possible answers list: $possibleAnswers');
+
+    // 5️⃣ Compare user answer
+    bool isCorrect = possibleAnswers.contains(answer);
+    print('User answer: "$answer" | Is correct: $isCorrect');
 
     setState(() {
-      feedback = (answer.trim().toLowerCase() == meaning.toLowerCase())
-          ? "✅ Correct! and its also ($meaning)"
+      feedback = isCorrect
+          ? "✅ Correct! It’s also ($meaning)"
           : "❌ Wrong! ($meaning)";
       answered = true;
     });
 
-    controller.clear(); // clear text after submit
+    controller.clear(); // Clear text after submit
   }
 
   void nextQuestion() {
