@@ -81,11 +81,11 @@ This is where the **main user interfaces (UIs)** or pages of the app are defined
 
 #### 🛠️ `lib/services/`
 Contains classes that implement **application services** or business logic, often dealing with background tasks or platform features.
-* `notification_service.dart` (Likely handles showing push or local notifications.)
+* `notification_service.dart`
 
 #### 🖼️ `lib/widgets/`
 Contains **reusable UI components** that are smaller than a full screen.
-* `flashcard_item.dart` (A component to display a single flashcard within a list or grid.)
+* `flashcard_item.dart` (A component to display a single flashcard within a list.)
 
 ---
 
