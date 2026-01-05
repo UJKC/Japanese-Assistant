@@ -25,6 +25,7 @@ import 'lesson20.dart';
 import 'lesson21.dart';
 import 'lesson22.dart';
 import 'lesson23.dart';
+import 'lesson24.dart';
 import '../models/lesson.dart';
 
 // Export them if you also want direct access
@@ -52,6 +53,7 @@ export 'lesson20.dart';
 export 'lesson21.dart';
 export 'lesson22.dart';
 export 'lesson23.dart';
+export 'lesson24.dart';
 
 // Now provide a single list that contains all lessons
-List<Lesson> lessons = [lesson0, lesson1, lesson2, lesson3, lesson4, lesson5, lesson6, lesson7, lesson8, lesson9, lesson10, lesson11, lesson12, lesson13, lesson14, lesson15, lesson16, lesson17, lesson18, lesson19, lesson20, lesson21, lesson22, lesson23];
+List<Lesson> lessons = [lesson0, lesson1, lesson2, lesson3, lesson4, lesson5, lesson6, lesson7, lesson8, lesson9, lesson10, lesson11, lesson12, lesson13, lesson14, lesson15, lesson16, lesson17, lesson18, lesson19, lesson20, lesson21, lesson22, lesson23, lesson24];
