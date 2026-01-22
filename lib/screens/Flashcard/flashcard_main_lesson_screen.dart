@@ -249,19 +249,37 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Text(
-            card.japanese,
-            style: TextStyle(
-              fontSize: 28,
-              height: 1.4,
-              fontWeight: FontWeight.w600,
-              color: (_isSpeaking && index == _currentIndex)
-                  ? Colors.blue
-                  : Colors.black,
-            ),
-            textAlign: TextAlign.center,
-          ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final textWidget = Text(
+              card.japanese,
+              style: TextStyle(
+                fontSize: 28,
+                height: 1.4,
+                fontWeight: FontWeight.w600,
+                color: (_isSpeaking && index == _currentIndex)
+                    ? Colors.blue
+                    : Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            );
+
+            // Measure if the text exceeds the available height
+            final textPainter =
+                TextPainter(
+                  text: TextSpan(text: card.japanese, style: textWidget.style),
+                  maxLines: null,
+                  textDirection: TextDirection.ltr,
+                )..layout(
+                  maxWidth: constraints.maxWidth - 40,
+                ); // padding adjustment
+
+            if (textPainter.size.height > constraints.maxHeight) {
+              return SingleChildScrollView(child: textWidget);
+            } else {
+              return Center(child: textWidget);
+            }
+          },
         ),
       ),
     );
@@ -274,12 +292,29 @@ class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Text(
-            card.meaning,
-            style: const TextStyle(fontSize: 20),
-            textAlign: TextAlign.center,
-          ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final textWidget = Text(
+              card.meaning,
+              style: const TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            );
+
+            final textPainter =
+                TextPainter(
+                  text: TextSpan(text: card.meaning, style: textWidget.style),
+                  maxLines: null,
+                  textDirection: TextDirection.ltr,
+                )..layout(
+                  maxWidth: constraints.maxWidth - 40,
+                ); // padding adjustment
+
+            if (textPainter.size.height > constraints.maxHeight) {
+              return SingleChildScrollView(child: textWidget);
+            } else {
+              return Center(child: textWidget);
+            }
+          },
         ),
       ),
     );
