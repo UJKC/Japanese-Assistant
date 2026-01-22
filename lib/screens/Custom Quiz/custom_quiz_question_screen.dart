@@ -123,16 +123,38 @@ class _CustomQuizQuestionScreenState extends State<CustomQuizQuestionScreen> {
         child: Column(
           children: [
             const Spacer(),
-            Center(
-              child: Text(
-                current.japanese,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final textWidget = Text(
+                    current.japanese,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+
+                  // Measure the text height
+                  final textPainter = TextPainter(
+                    text: TextSpan(
+                      text: current.japanese,
+                      style: textWidget.style,
+                    ),
+                    maxLines: null,
+                    textDirection: TextDirection.ltr,
+                  )..layout(maxWidth: constraints.maxWidth);
+
+                  // If text is taller than available space → scrollable
+                  if (textPainter.size.height > constraints.maxHeight) {
+                    return SingleChildScrollView(child: textWidget);
+                  } else {
+                    return Center(child: textWidget);
+                  }
+                },
               ),
             ),
+
             const SizedBox(height: 32),
             ...options.map((option) {
               return Padding(
