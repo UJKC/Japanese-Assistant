@@ -35,7 +35,7 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
 
     setState(() {
       feedback = isCorrect
-          ? "✅ Correct! It’s also ($meaning)"
+          ? "✅ Correct!"
           : "❌ Wrong! ($meaning)";
       answered = true;
     });
@@ -85,14 +85,35 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
         child: Column(
           children: [
             const Spacer(),
-            Center(
-              child: Text(
-                card.japanese,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final textWidget = Text(
+                    card.japanese,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+
+                  // Measure the text height
+                  final textPainter = TextPainter(
+                    text: TextSpan(
+                      text: card.japanese,
+                      style: textWidget.style,
+                    ),
+                    maxLines: null,
+                    textDirection: TextDirection.ltr,
+                  )..layout(maxWidth: constraints.maxWidth);
+
+                  // If text is taller than available space → scrollable
+                  if (textPainter.size.height > constraints.maxHeight) {
+                    return SingleChildScrollView(child: textWidget);
+                  } else {
+                    return Center(child: textWidget);
+                  }
+                },
               ),
             ),
 
