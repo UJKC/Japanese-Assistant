@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ 1. Import TTS
 import '../../models/unit.dart';
@@ -18,11 +20,11 @@ class FlashcardMainLessonScreen extends StatefulWidget {
       _FlashcardMainLessonScreenState();
 }
 
-class _FlashcardMainLessonScreenState
-    extends State<FlashcardMainLessonScreen> {
+class _FlashcardMainLessonScreenState extends State<FlashcardMainLessonScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
   bool _isSpeaking = false;
+  bool _isFlipped = false;
 
   Flashcard get _currentCard => widget.unit.items[_currentIndex];
 
@@ -52,10 +54,7 @@ class _FlashcardMainLessonScreenState
   }
 
   void _editFlashcard() {
-    _showFlashcardDialog(
-      existingCard: _currentCard,
-      index: _currentIndex,
-    );
+    _showFlashcardDialog(existingCard: _currentCard, index: _currentIndex);
   }
 
   void _deleteFlashcard() {
@@ -85,12 +84,15 @@ class _FlashcardMainLessonScreenState
   }
 
   void _showFlashcardDialog({Flashcard? existingCard, int? index}) {
-    final jpController =
-        TextEditingController(text: existingCard?.japanese ?? "");
-    final meaningController =
-        TextEditingController(text: existingCard?.meaning ?? "");
-    final pronController =
-        TextEditingController(text: existingCard?.pronunciation ?? "");
+    final jpController = TextEditingController(
+      text: existingCard?.japanese ?? "",
+    );
+    final meaningController = TextEditingController(
+      text: existingCard?.meaning ?? "",
+    );
+    final pronController = TextEditingController(
+      text: existingCard?.pronunciation ?? "",
+    );
 
     showDialog(
       context: context,
@@ -110,8 +112,7 @@ class _FlashcardMainLessonScreenState
               ),
               TextField(
                 controller: pronController,
-                decoration:
-                    const InputDecoration(labelText: "Pronunciation"),
+                decoration: const InputDecoration(labelText: "Pronunciation"),
               ),
             ],
           ),
@@ -160,6 +161,7 @@ class _FlashcardMainLessonScreenState
                 setState(() {
                   _currentIndex = index;
                   _isSpeaking = false;
+                  _isFlipped = false;
                 });
                 widget.flutterTts.stop();
               },
@@ -167,39 +169,39 @@ class _FlashcardMainLessonScreenState
                 final card = widget.unit.items[index];
                 return Padding(
                   padding: const EdgeInsets.all(24),
-                  child: Card(
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Text(
-                              card.japanese,
-                              style: TextStyle(
-                                fontSize: 28,
-                                height: 1.4,
-                                fontWeight: FontWeight.w600,
-                                color: (_isSpeaking &&
-                                        index == _currentIndex)
-                                    ? Colors.blue
-                                    : Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 20),
-                            if (card.meaning.isNotEmpty)
-                              Text(
-                                card.meaning,
-                                style: const TextStyle(fontSize: 18),
-                                textAlign: TextAlign.center,
-                              ),
-                          ],
-                        ),
-                      ),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (index == _currentIndex) {
+                        setState(() => _isFlipped = !_isFlipped);
+                      }
+                    },
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      transitionBuilder: (child, animation) {
+                        final rotate = Tween(
+                          begin: pi,
+                          end: 0.0,
+                        ).animate(animation);
+                        return AnimatedBuilder(
+                          animation: rotate,
+                          child: child,
+                          builder: (context, child) {
+                            final isUnder =
+                                (ValueKey(_isFlipped) != child!.key);
+                            final tilt = isUnder
+                                ? min(rotate.value, pi / 2)
+                                : rotate.value;
+                            return Transform(
+                              transform: Matrix4.rotationY(tilt),
+                              alignment: Alignment.center,
+                              child: child,
+                            );
+                          },
+                        );
+                      },
+                      child: _isFlipped
+                          ? _buildBackCard(card)
+                          : _buildFrontCard(card, index),
                     ),
                   ),
                 );
@@ -214,7 +216,10 @@ class _FlashcardMainLessonScreenState
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(_isSpeaking ? Icons.pause : Icons.volume_up, size: 32,),
+                  icon: Icon(
+                    _isSpeaking ? Icons.pause : Icons.volume_up,
+                    size: 32,
+                  ),
                   onPressed: _speak,
                 ),
                 IconButton(
@@ -233,6 +238,49 @@ class _FlashcardMainLessonScreenState
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showFlashcardDialog(),
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildFrontCard(Flashcard card, int index) {
+    return Card(
+      key: const ValueKey(false),
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Text(
+            card.japanese,
+            style: TextStyle(
+              fontSize: 28,
+              height: 1.4,
+              fontWeight: FontWeight.w600,
+              color: (_isSpeaking && index == _currentIndex)
+                  ? Colors.blue
+                  : Colors.black,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackCard(Flashcard card) {
+    return Card(
+      key: const ValueKey(true),
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Text(
+            card.meaning,
+            style: const TextStyle(fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
