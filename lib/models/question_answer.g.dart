@@ -1,41 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'unit.dart';
+part of 'question_answer.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UnitAdapter extends TypeAdapter<Unit> {
+class QuestionAnswerAdapter extends TypeAdapter<QuestionAnswer> {
   @override
-  final int typeId = 2;
+  final int typeId = 4;
 
   @override
-  Unit read(BinaryReader reader) {
+  QuestionAnswer read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Unit(
-      title: fields[0] as String,
-      slug: fields[1] as String,
-      items: (fields[2] as List).cast<Flashcard>(),
-      paragraphs: (fields[3] as List).cast<Paragraph>(),
+    return QuestionAnswer(
+      question: fields[0] as String,
+      answer: fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Unit obj) {
+  void write(BinaryWriter writer, QuestionAnswer obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.title)
-      ..writeByte(1)
-      ..write(obj.slug)
       ..writeByte(2)
-      ..write(obj.items)
-      ..writeByte(3)
-      ..write(obj.paragraphs);
+      ..writeByte(0)
+      ..write(obj.question)
+      ..writeByte(1)
+      ..write(obj.answer);
   }
 
   @override
@@ -44,7 +38,7 @@ class UnitAdapter extends TypeAdapter<Unit> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UnitAdapter &&
+      other is QuestionAnswerAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:japanese_assistant/models/paragraph.dart';
 import 'flashcard.dart';
 
 part 'unit.g.dart';
@@ -14,5 +15,8 @@ class Unit extends HiveObject {
   @HiveField(2)
   List<Flashcard> items;
 
-  Unit({required this.title, required this.slug, required this.items});
+  @HiveField(3)
+  List<Paragraph> paragraphs;
+
+  Unit({required this.title, required this.slug, required this.items, required this.paragraphs});
 }

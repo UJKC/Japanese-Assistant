@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:japanese_assistant/models/question_answer.dart';
 import 'package:japanese_assistant/models/quiz_result.dart';
 import 'models/flashcard.dart';
 import 'screens/home_screen.dart';
@@ -36,6 +37,8 @@ Future<void> main() async {
 
   Hive.registerAdapter(FlashcardAdapter());
   await Hive.openBox<Flashcard>('flashcards');
+  Hive.registerAdapter(QuestionAnswerAdapter());
+  await Hive.openBox<QuestionAnswer>('question_answers');
   Hive.registerAdapter(QuizResultAdapter());
   await Hive.openBox<QuizResult>('quiz_results');
 
