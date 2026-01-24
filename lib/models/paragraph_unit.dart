@@ -13,7 +13,7 @@ class ParagraphUnit extends HiveObject {
   String slug;
 
   @HiveField(2)
-  List<Paragraph> paragraphs;
+  List<Paragraph> items;
 
-  ParagraphUnit({required this.title, required this.slug, required this.paragraphs});
+  ParagraphUnit({required this.title, required this.slug, required this.items});
 }

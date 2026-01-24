@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:japanese_assistant/screens/Custom%20Quiz/custom_quiz_screen.dart';
+import 'package:japanese_assistant/screens/Paragraph/paragraph_main.dart';
 import 'Flashcard/flashcard_main.dart';
 import 'Quiz/quiz_screen.dart';
 import 'credits_screen.dart';
@@ -46,6 +47,19 @@ class HomeScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const FlashcardMain()),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Flashcards Button
+                _buildMenuButton(
+                  context,
+                  title: "Learn Paragraphs",
+                  icon: Icons.book,
+                  color: Colors.orange,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ParagraphMain()),
                   ),
                 ),
                 const SizedBox(height: 20),
