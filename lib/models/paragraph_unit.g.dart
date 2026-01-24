@@ -19,7 +19,7 @@ class ParagraphUnitAdapter extends TypeAdapter<ParagraphUnit> {
     return ParagraphUnit(
       title: fields[0] as String,
       slug: fields[1] as String,
-      paragraphs: (fields[2] as List).cast<Paragraph>(),
+      items: (fields[2] as List).cast<Paragraph>(),
     );
   }
 
@@ -32,7 +32,7 @@ class ParagraphUnitAdapter extends TypeAdapter<ParagraphUnit> {
       ..writeByte(1)
       ..write(obj.slug)
       ..writeByte(2)
-      ..write(obj.paragraphs);
+      ..write(obj.items);
   }
 
   @override

@@ -12,11 +12,15 @@ class Paragraph extends HiveObject {
   String content; // the big paragraph text
 
   @HiveField(2)
+  String meaning;
+
+  @HiveField(3)
   List<QuestionAnswer> questions;
 
   Paragraph({
     required this.title,
     required this.content,
+    required this.meaning,
     required this.questions,
   });
 }

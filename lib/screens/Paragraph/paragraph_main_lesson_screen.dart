@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ 1. Import TTS
 import 'package:japanese_assistant/models/paragraph.dart';
 import 'package:japanese_assistant/models/paragraph_unit.dart';
-import '../../models/flashcard.dart';
 
 class ParagraphMainLessonScreen extends StatefulWidget {
   final ParagraphUnit unit;
@@ -51,7 +50,7 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
 
     await widget.flutterTts.stop();
     setState(() => _isSpeaking = true);
-    await widget.flutterTts.speak(_currentCard.japanese);
+    await widget.flutterTts.speak(_currentCard.content);
   }
 
   void _editFlashcard() {
@@ -84,16 +83,17 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
     );
   }
 
-  void _showFlashcardDialog({Flashcard? existingCard, int? index}) {
+  void _showFlashcardDialog({Paragraph? existingCard, int? index}) {
     final jpController = TextEditingController(
-      text: existingCard?.japanese ?? "",
+      text: existingCard?.content ?? "",
     );
     final meaningController = TextEditingController(
       text: existingCard?.meaning ?? "",
     );
-    final pronController = TextEditingController(
-      text: existingCard?.pronunciation ?? "",
+    final titleController = TextEditingController(
+      text: existingCard?.title ?? "",
     );
+    final questionController = existingCard?.questions ?? [];
 
     showDialog(
       context: context,
@@ -112,8 +112,8 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
                 decoration: const InputDecoration(labelText: "Meaning"),
               ),
               TextField(
-                controller: pronController,
-                decoration: const InputDecoration(labelText: "Pronunciation"),
+                controller: titleController,
+                decoration: const InputDecoration(labelText: "Title"),
               ),
             ],
           ),
@@ -125,10 +125,11 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              final newCard = Flashcard(
-                japanese: jpController.text,
+              final newCard = Paragraph(
+                title: titleController.text,
+                content: jpController.text,
                 meaning: meaningController.text,
-                pronunciation: pronController.text,
+                questions: questionController,
               );
 
               setState(() {
@@ -231,6 +232,10 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
                   icon: const Icon(Icons.delete, size: 32, color: Colors.red),
                   onPressed: _deleteFlashcard,
                 ),
+                IconButton(
+                  icon: const Icon(Icons.question_answer_rounded, size: 32),
+                  onPressed: _deleteFlashcard,
+                ),
               ],
             ),
           ),
@@ -243,7 +248,7 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
     );
   }
 
-  Widget _buildFrontCard(Flashcard card, int index) {
+  Widget _buildFrontCard(Paragraph card, int index) {
     return Card(
       key: const ValueKey(false),
       elevation: 6,
@@ -253,7 +258,7 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final textWidget = Text(
-              card.japanese,
+              card.content,
               style: TextStyle(
                 fontSize: 28,
                 height: 1.4,
@@ -268,7 +273,7 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
             // Measure if the text exceeds the available height
             final textPainter =
                 TextPainter(
-                  text: TextSpan(text: card.japanese, style: textWidget.style),
+                  text: TextSpan(text: card.content, style: textWidget.style),
                   maxLines: null,
                   textDirection: TextDirection.ltr,
                 )..layout(
@@ -286,7 +291,7 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
     );
   }
 
-  Widget _buildBackCard(Flashcard card) {
+  Widget _buildBackCard(Paragraph card) {
     return Card(
       key: const ValueKey(true),
       elevation: 6,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ Add this import
 import 'package:japanese_assistant/models/paragraph_lesson.dart';
 import 'package:japanese_assistant/models/paragraph_unit.dart';
-import 'package:japanese_assistant/screens/Flashcard/flashcard_main_lesson_screen.dart';
+import 'package:japanese_assistant/screens/Paragraph/paragraph_main_lesson_screen.dart';
 
 
 class ParagraphMainLesson extends StatefulWidget {
@@ -86,7 +86,7 @@ class _ParagraphMainLessonState extends State<ParagraphMainLesson> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => FlashcardMainLessonScreen(
+                  builder: (_) => ParagraphMainLessonScreen(
                     unit: unit,
                     flutterTts: widget.flutterTts, // ✅ Pass it forward
                   ),

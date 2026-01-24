@@ -19,19 +19,22 @@ class ParagraphAdapter extends TypeAdapter<Paragraph> {
     return Paragraph(
       title: fields[0] as String,
       content: fields[1] as String,
-      questions: (fields[2] as List).cast<QuestionAnswer>(),
+      meaning: fields[2] as String,
+      questions: (fields[3] as List).cast<QuestionAnswer>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Paragraph obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.content)
       ..writeByte(2)
+      ..write(obj.meaning)
+      ..writeByte(3)
       ..write(obj.questions);
   }
 
