@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'flashcard.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 class Flashcard extends HiveObject {
   @HiveField(0)
   String japanese; // Japanese word

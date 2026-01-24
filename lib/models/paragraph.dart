@@ -3,7 +3,7 @@ import 'question_answer.dart';
 
 part 'paragraph.g.dart';
 
-@HiveType(typeId: 5)
+@HiveType(typeId: 6)
 class Paragraph extends HiveObject {
   @HiveField(0)
   String title; // optional but useful

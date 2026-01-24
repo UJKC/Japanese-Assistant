@@ -8,7 +8,7 @@ part of 'flashcard.dart';
 
 class FlashcardAdapter extends TypeAdapter<Flashcard> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
   Flashcard read(BinaryReader reader) {

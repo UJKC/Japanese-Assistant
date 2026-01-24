@@ -1,10 +1,11 @@
 import 'package:hive/hive.dart';
+import 'package:japanese_assistant/models/paragraph_unit.dart';
 import 'unit.dart';
 
-part 'lesson.g.dart';
+part 'paragraph_lesson.g.dart';
 
-@HiveType(typeId: 0)
-class Lesson extends HiveObject {
+@HiveType(typeId: 4)
+class ParagraphLesson extends HiveObject {
   @HiveField(0)
   int lessonNumber;
 
@@ -18,9 +19,9 @@ class Lesson extends HiveObject {
   String slug;
 
   @HiveField(4)
-  List<Unit> units;
+  List<ParagraphUnit> units;
 
-  Lesson({
+  ParagraphLesson({
     required this.lessonNumber,
     required this.lessonTitle,
     required this.lessonPages,

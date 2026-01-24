@@ -8,7 +8,7 @@ part of 'paragraph.dart';
 
 class ParagraphAdapter extends TypeAdapter<Paragraph> {
   @override
-  final int typeId = 5;
+  final int typeId = 6;
 
   @override
   Paragraph read(BinaryReader reader) {

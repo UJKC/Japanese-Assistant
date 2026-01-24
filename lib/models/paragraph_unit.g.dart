@@ -1,30 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'unit.dart';
+part of 'paragraph_unit.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UnitAdapter extends TypeAdapter<Unit> {
+class ParagraphUnitAdapter extends TypeAdapter<ParagraphUnit> {
   @override
-  final int typeId = 1;
+  final int typeId = 5;
 
   @override
-  Unit read(BinaryReader reader) {
+  ParagraphUnit read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Unit(
+    return ParagraphUnit(
       title: fields[0] as String,
       slug: fields[1] as String,
-      items: (fields[2] as List).cast<Flashcard>(),
+      paragraphs: (fields[2] as List).cast<Paragraph>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Unit obj) {
+  void write(BinaryWriter writer, ParagraphUnit obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -32,7 +32,7 @@ class UnitAdapter extends TypeAdapter<Unit> {
       ..writeByte(1)
       ..write(obj.slug)
       ..writeByte(2)
-      ..write(obj.items);
+      ..write(obj.paragraphs);
   }
 
   @override
@@ -41,7 +41,7 @@ class UnitAdapter extends TypeAdapter<Unit> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UnitAdapter &&
+      other is ParagraphUnitAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

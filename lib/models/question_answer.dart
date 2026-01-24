@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'question_answer.g.dart';
 
-@HiveType(typeId: 4) // make sure this is unique
+@HiveType(typeId: 7) // make sure this is unique
 class QuestionAnswer extends HiveObject {
   @HiveField(0)
   String question;
