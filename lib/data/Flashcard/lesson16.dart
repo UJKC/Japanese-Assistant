@@ -1,6 +1,6 @@
-import 'package:japanese_assistant/models/flashcard.dart';
-import 'package:japanese_assistant/models/lesson.dart';
-import 'package:japanese_assistant/models/unit.dart';
+import 'package:japanese_assistant/models/Flashcard/flashcard.dart';
+import 'package:japanese_assistant/models/Flashcard/lesson.dart';
+import 'package:japanese_assistant/models/Flashcard/unit.dart';
 
 final lesson16 = Lesson(
   lessonNumber: 16,

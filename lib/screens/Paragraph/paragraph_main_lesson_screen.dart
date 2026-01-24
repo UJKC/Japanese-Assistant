@@ -2,8 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ 1. Import TTS
-import 'package:japanese_assistant/models/paragraph.dart';
-import 'package:japanese_assistant/models/paragraph_unit.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph_unit.dart';
+import 'package:japanese_assistant/screens/Paragraph/paragraph_main_lesson_question-screen.dart';
 
 class ParagraphMainLessonScreen extends StatefulWidget {
   final ParagraphUnit unit;
@@ -234,7 +235,16 @@ class _ParagraphMainLessonScreenState extends State<ParagraphMainLessonScreen> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.question_answer_rounded, size: 32),
-                  onPressed: _deleteFlashcard,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ParagraphQuestionScreen(
+                          paragraph: _currentCard,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

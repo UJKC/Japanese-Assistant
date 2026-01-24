@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:japanese_assistant/models/paragraph.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph.dart';
 import 'flashcard.dart';
 
 part 'unit.g.dart';

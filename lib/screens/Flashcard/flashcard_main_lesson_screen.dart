@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ 1. Import TTS
-import '../../models/unit.dart';
-import '../../models/flashcard.dart';
+import '../../models/Flashcard/unit.dart';
+import '../../models/Flashcard/flashcard.dart';
 
 class FlashcardMainLessonScreen extends StatefulWidget {
   final Unit unit;

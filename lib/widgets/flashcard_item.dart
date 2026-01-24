@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
-import '../models/flashcard.dart';
+import '../models/Flashcard/flashcard.dart';
 
 class FlashcardItem extends StatelessWidget {
   final Flashcard card;

@@ -1,8 +1,8 @@
 // lib/screens/flashcard_main_lesson.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart'; // ✅ Add this import
-import 'package:japanese_assistant/models/paragraph_lesson.dart';
-import 'package:japanese_assistant/models/paragraph_unit.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph_lesson.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph_unit.dart';
 import 'package:japanese_assistant/screens/Paragraph/paragraph_main_lesson_screen.dart';
 
 

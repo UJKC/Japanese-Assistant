@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:japanese_assistant/models/paragraph_unit.dart';
-import 'unit.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph_unit.dart';
+import '../Flashcard/unit.dart';
 
 part 'paragraph_lesson.g.dart';
 

@@ -1,6 +1,6 @@
 // lib/screens/flashcard_main.dart
 import 'package:flutter/material.dart';
-import 'package:japanese_assistant/models/paragraph_lesson.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph_lesson.dart';
 import 'package:japanese_assistant/screens/Paragraph/paragraph_main_lesson.dart';
 import '../../data/index.dart'; // lessons list
 import '../../main.dart'; // ✅ import to access global flutterTts

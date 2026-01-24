@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:japanese_assistant/models/paragraph.dart';
-import 'flashcard.dart';
+import 'package:japanese_assistant/models/Paragraph/paragraph.dart';
+import '../Flashcard/flashcard.dart';
 
 part 'paragraph_unit.g.dart';
 
