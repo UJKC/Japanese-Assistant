@@ -4,7 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:japanese_assistant/models/Paragraph/question_answer.dart';
-import 'package:japanese_assistant/models/quiz_result.dart';
+import 'package:japanese_assistant/models/Flashcard/quiz_result.dart';
 import 'models/Flashcard/flashcard.dart';
 import 'screens/home_screen.dart';
 import 'services/notification_service.dart';

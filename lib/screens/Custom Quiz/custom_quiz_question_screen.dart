@@ -1,7 +1,7 @@
 // lib/screens/custom_quiz_question_screen.dart
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:japanese_assistant/models/quiz_result.dart';
+import 'package:japanese_assistant/models/Flashcard/quiz_result.dart';
 import '../../models/Flashcard/flashcard.dart';
 import '../Quiz/quiz_result_screen.dart';
 import 'dart:math';
